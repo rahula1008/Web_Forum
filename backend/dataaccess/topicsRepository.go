@@ -41,3 +41,16 @@ func GetAllTopics() ([]models.Topic, error) {
 
 	return topics, nil
 }
+
+func GetTopicByID(id int) (*models.Topic, error) {
+	var topic models.Topic
+
+	getTopicByIDQuery := `SELECT * from topics where id = $1`
+	err := initializers.DB.Get(&topic, getTopicByIDQuery, id)
+
+	if err != nil {
+		return nil, err
+	}
+	return &topic, nil
+
+}

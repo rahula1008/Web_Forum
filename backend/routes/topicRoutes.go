@@ -7,6 +7,7 @@ import (
 
 func SetupTopicRoutes(router *gin.Engine) {
 	router.GET("/topics", controllers.GetAllTopics)
+	router.GET("/topics/:id", controllers.GetTopicByID)
 
 	router.POST("/topics", controllers.CreateTopic)
 }

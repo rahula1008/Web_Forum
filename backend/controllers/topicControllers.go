@@ -39,6 +39,24 @@ func GetAllTopics(c *gin.Context) {
 
 }
 
+func GetTopicByID(c *gin.Context) {
+	topic, err := dataaccess.GetTopicByID(1)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, Response{
+			Success: false,
+			Message: "Failed to get topic",
+			Error:   err.Error(),
+			Code:    http.StatusInternalServerError,
+		})
+	}
+	c.JSON(200, Response{
+		Success: true,
+		Data:    topic,
+	})
+
+}
+
 func CreateTopic(c *gin.Context) {
 	var topic models.Topic
 
