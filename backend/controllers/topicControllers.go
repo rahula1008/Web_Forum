@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -40,7 +41,17 @@ func GetAllTopics(c *gin.Context) {
 }
 
 func GetTopicByID(c *gin.Context) {
-	topic, err := dataaccess.GetTopicByID(1)
+
+	id := c.Param("id")
+	topicID, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(400, Response{
+			Success: true,
+			Error:   err.Error(),
+		})
+		return
+	}
+	topic, err := dataaccess.GetTopicByID(topicID)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, Response{
@@ -49,10 +60,30 @@ func GetTopicByID(c *gin.Context) {
 			Error:   err.Error(),
 			Code:    http.StatusInternalServerError,
 		})
+		return
 	}
 	c.JSON(200, Response{
 		Success: true,
 		Data:    topic,
+	})
+
+}
+
+func SearchTopic(c *gin.Context) {
+	searchString := c.Query("title")
+	topics, err := dataaccess.SearchTopic(searchString)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, Response{
+			Success: false,
+			Message: "Failed to get topics",
+			Error:   err.Error(),
+			Code:    http.StatusInternalServerError,
+		})
+	}
+	c.JSON(200, Response{
+		Success: true,
+		Data:    topics,
 	})
 
 }

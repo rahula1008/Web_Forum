@@ -8,6 +8,6 @@ import (
 func SetupTopicRoutes(router *gin.Engine) {
 	router.GET("/topics", controllers.GetAllTopics)
 	router.GET("/topics/:id", controllers.GetTopicByID)
-
+	router.GET("/topics/search", controllers.SearchTopic)
 	router.POST("/topics", controllers.CreateTopic)
 }

@@ -1,6 +1,7 @@
 package dataaccess
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/rahula1008/Web_Forum/initializers"
@@ -9,8 +10,8 @@ import (
 
 func SaveTopicToDB(topic *models.Topic) error {
 
-	insertQuery := `INSERT INTO topics (title, description, creator_id, created_at, updated_at) 
-		VALUES (:title, :description, :creator_id, :created_at, :updated_at)
+	insertQuery := `INSERT INTO topics (title, description, creator_id) 
+		VALUES (:title, :description, :creator_id)
 		returning id`
 
 	rows, err := initializers.DB.NamedQuery(insertQuery, topic)
@@ -52,5 +53,23 @@ func GetTopicByID(id int) (*models.Topic, error) {
 		return nil, err
 	}
 	return &topic, nil
+
+}
+
+func SearchTopic(searchString string) ([]models.Topic, error) {
+	var topics []models.Topic
+
+	findTopicLikeSearchString := `
+		SELECT *
+		FROM topics
+		WHERE title ILIKE '%' || $1 || '%'
+		ORDER BY created_at DESC
+	`
+	err := initializers.DB.Select(&topics, findTopicLikeSearchString, searchString)
+
+	if err != nil {
+		return nil, fmt.Errorf("search topics: %w", err)
+	}
+	return topics, nil
 
 }
