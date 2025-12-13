@@ -11,13 +11,14 @@ import (
 )
 
 var schema = `
+CREATE EXTENSION IF NOT EXISTS citext;
 -- USERS
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     
     -- Authentication & Identity
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    username CITEXT UNIQUE NOT NULL,
+    email CITEXT UNIQUE NOT NULL,
     password_hash VARCHAR(100) NOT NULL,
     
     -- Timestamps
@@ -29,7 +30,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS topics (
     id SERIAL PRIMARY KEY,
 
-    title VARCHAR(50) UNIQUE NOT NULL,
+    title CITEXT UNIQUE NOT NULL,
     description TEXT NOT NULL,
     
     -- Foreign Key: Links to the Users table
@@ -74,7 +75,7 @@ var insertSampleQuery = `
 -- Insert a random user and topic
 insert into users (id, username, email, password_hash)
 values (1, 'rahul', 'rahul@gmail.com', '123hash');
-insert into topics (name, description, creator_id)
+insert into topics (title, description, creator_id)
 values ('charity', 'this is to talk about charity', 1);
 `
 
@@ -86,7 +87,7 @@ func init() {
 func main() {
 
 	initializers.DB.MustExec(schema)
-	//initializers.DB.MustExec(insertSampleQuery)
+	initializers.DB.MustExec(insertSampleQuery)
 
 	topics := []models.Topic{}
 
