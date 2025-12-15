@@ -121,7 +121,7 @@ func CreateTopic(c *gin.Context) {
 		// Return a generic 500 server error to the client
 		c.JSON(http.StatusInternalServerError, Response{
 			Success: false,
-			Error:   "Could not create topic due to a server error.",
+			Error:   err.Error(),
 			Code:    http.StatusInternalServerError,
 		})
 		return

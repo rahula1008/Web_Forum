@@ -1,6 +1,7 @@
 package dataaccess
 
 import (
+	"errors"
 	"fmt"
 	"log"
 
@@ -22,14 +23,19 @@ func SaveTopicToDB(topic *models.Topic) error {
 	}
 	defer rows.Close()
 
-	if rows.Next() {
-		if err := rows.Scan(&topic.ID); err != nil {
+	if !rows.Next() {
+		if err := rows.Err(); err != nil {
 			return err
 		}
+		return errors.New("save topic: no id returned")
+	}
+
+	if err := rows.Scan(&topic.ID); err != nil {
+		return err
 	}
 
 	// If successful, the topic struct now has the new ID.
-	return nil
+	return rows.Err()
 }
 
 func GetAllTopics() ([]models.Topic, error) {
