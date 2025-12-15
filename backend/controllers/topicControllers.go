@@ -21,10 +21,12 @@ type Response struct {
 }
 
 const (
-	getTopicsFailedMessage          = "Failed to get all the topics"
-	getTopicByIDFailedMessage       = "Failed to get this topic ID"
-	searchTopicByTitleFailedMessage = "Failed to search for this title"
-	saveTopicFailedMessage          = "Failed to save topic"
+	getTopicsFailedMessage             = "Failed to get all the topics"
+	getTopicByIDFailedMessage          = "Failed to get this topic ID"
+	searchTopicByTitleFailedMessage    = "Failed to search for this title"
+	saveTopicFailedMessage             = "Failed to save topic"
+	failedToReadIDMessage              = "Failed to parse ID"
+	incorrectBodyForUpdateTopicMessage = "Incorrect body to update topic"
 )
 
 func GetAllTopics(c *gin.Context) {
@@ -124,6 +126,65 @@ func CreateTopic(c *gin.Context) {
 		Code:    http.StatusCreated,
 	})
 
+}
+
+func UpdateTopic(c *gin.Context) {
+	id := c.Param("id")
+	topicID, err := strconv.Atoi(id)
+
+	if err != nil {
+		sendBadRequestResponse(c, failedToReadIDMessage, err)
+		return
+	}
+
+	var updatedTopic models.Topic
+	err = c.ShouldBindJSON(&updatedTopic)
+
+	if err != nil {
+		sendBadRequestResponse(c, incorrectBodyForUpdateTopicMessage, err)
+		return
+	}
+
+	updatedTopic.ID = topicID
+
+	err = dataaccess.UpdateTopic(&updatedTopic)
+
+	if err != nil {
+		sendInternalStatusServerError(c, "Failed to update topic", err)
+	}
+
+}
+
+func DeleteTopic(c *gin.Context) {
+	id := c.Param("id")
+
+	topicID, err := strconv.Atoi(id)
+
+	if err != nil {
+		sendBadRequestResponse(c, failedToReadIDMessage, err)
+		return
+	}
+
+	err = dataaccess.DeleteTopic(topicID)
+
+	if err != nil {
+		sendInternalStatusServerError(c, "Failed to delete topic", err)
+		return
+	}
+
+	c.JSON(http.StatusNoContent, Response{
+		Success: true,
+		Message: "Topic deleted successfully",
+	})
+}
+
+func sendBadRequestResponse(c *gin.Context, message string, err error) {
+	c.JSON(http.StatusBadRequest, Response{
+		Success: false,
+		Message: message,
+		Error:   err.Error(),
+		Code:    http.StatusBadRequest,
+	})
 }
 
 func validateTopic(topic models.Topic) error {

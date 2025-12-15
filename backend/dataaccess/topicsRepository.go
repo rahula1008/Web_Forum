@@ -79,3 +79,52 @@ func SearchTopic(searchString string) ([]models.Topic, error) {
 	return topics, nil
 
 }
+
+func UpdateTopic(topic *models.Topic) error {
+	updateQuery := `
+		UPDATE topics
+		SET title=:title, description=:description
+		WHERE id=:id
+	`
+
+	result, err := initializers.DB.NamedExec(updateQuery, topic)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return errors.New("update topic: no rows affected")
+	}
+
+	return nil
+}
+
+func DeleteTopic(id int) error {
+	deleteQuery := `
+		DELETE FROM topics 
+		WHERE id = $1`
+
+	result, err := initializers.DB.Exec(deleteQuery, id)
+
+	fmt.Print("Test")
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("delete topic: no rows updated")
+	}
+
+	return nil
+
+}
