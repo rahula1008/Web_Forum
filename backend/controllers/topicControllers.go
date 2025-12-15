@@ -20,18 +20,22 @@ type Response struct {
 	Code    int         `json:"code,omitempty"`
 }
 
+const (
+	getTopicsFailedMessage          = "Failed to get all the topics"
+	getTopicByIDFailedMessage       = "Failed to get this topic ID"
+	searchTopicByTitleFailedMessage = "Failed to search for this title"
+	saveTopicFailedMessage          = "Failed to save topic"
+)
+
 func GetAllTopics(c *gin.Context) {
 	var topics []models.Topic
 
 	topics, err := dataaccess.GetAllTopics()
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, Response{
-			Success: false,
-			Message: "Failed to get topics",
-			Error:   err.Error(),
-			Code:    http.StatusInternalServerError,
-		})
+		sendInternalStatusServerError(
+			c, getTopicsFailedMessage, err,
+		)
 	}
 	c.JSON(200, Response{
 		Success: true,
@@ -46,7 +50,7 @@ func GetTopicByID(c *gin.Context) {
 	topicID, err := strconv.Atoi(id)
 	if err != nil {
 		c.JSON(400, Response{
-			Success: true,
+			Success: false,
 			Error:   err.Error(),
 		})
 		return
@@ -54,12 +58,7 @@ func GetTopicByID(c *gin.Context) {
 	topic, err := dataaccess.GetTopicByID(topicID)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, Response{
-			Success: false,
-			Message: "Failed to get topic",
-			Error:   err.Error(),
-			Code:    http.StatusInternalServerError,
-		})
+		sendInternalStatusServerError(c, getTopicByIDFailedMessage, err)
 		return
 	}
 	c.JSON(200, Response{
@@ -74,12 +73,7 @@ func SearchTopic(c *gin.Context) {
 	topics, err := dataaccess.SearchTopic(searchString)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, Response{
-			Success: false,
-			Message: "Failed to get topics",
-			Error:   err.Error(),
-			Code:    http.StatusInternalServerError,
-		})
+		sendInternalStatusServerError(c, searchTopicByTitleFailedMessage, err)
 	}
 	c.JSON(200, Response{
 		Success: true,
@@ -119,11 +113,7 @@ func CreateTopic(c *gin.Context) {
 		log.Printf("DB Error creating topic: %v", err)
 
 		// Return a generic 500 server error to the client
-		c.JSON(http.StatusInternalServerError, Response{
-			Success: false,
-			Error:   err.Error(),
-			Code:    http.StatusInternalServerError,
-		})
+		sendInternalStatusServerError(c, saveTopicFailedMessage, err)
 		return
 	}
 
@@ -147,4 +137,13 @@ func validateTopic(topic models.Topic) error {
 		return errors.New("length of title must be at most 100")
 	}
 	return nil
+}
+
+func sendInternalStatusServerError(c *gin.Context, message string, err error) {
+	c.JSON(http.StatusInternalServerError, Response{
+		Success: false,
+		Message: message,
+		Error:   err.Error(),
+		Code:    http.StatusInternalServerError,
+	})
 }
