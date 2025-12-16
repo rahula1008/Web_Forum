@@ -30,3 +30,21 @@ func GetUserByID(id int) (*models.User, error) {
 
 	return &user, nil
 }
+
+func SearchUserByUsername(searchUsername string) ([]models.User, error) {
+
+	var users []models.User
+
+	searchUserQuery :=
+		`SELECT * 
+	FROM users 
+	WHERE username ILIKE '%' || $1 || '%'`
+
+	err := initializers.DB.Select(&users, searchUserQuery, searchUsername)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}

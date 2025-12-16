@@ -10,9 +10,10 @@ import (
 )
 
 const (
-	getUsersFailedMessage    = "Failed to get all the users"
-	InvalidIDMessage         = "Failed to read ID"
-	getUserByIDFailedMessage = "Failed to get this user ID"
+	getUsersFailedMessage      = "Failed to get all the users"
+	InvalidIDMessage           = "Failed to read ID"
+	getUserByIDFailedMessage   = "Failed to get this user ID"
+	searchUserByUsernameFailed = "Failed to find users matching search"
 )
 
 func GetAllUsers(c *gin.Context) {
@@ -51,6 +52,22 @@ func GetUserByID(c *gin.Context) {
 	c.JSON(http.StatusAccepted, Response{
 		Success: true,
 		Data:    user,
+	})
+
+}
+
+func SearchUserByUsername(c *gin.Context) {
+	searchUsername := c.Query("username")
+
+	users, err := dataaccess.SearchUserByUsername(searchUsername)
+
+	if err != nil {
+		sendInternalStatusServerError(c, searchUserByUsernameFailed, err)
+	}
+
+	c.JSON(200, Response{
+		Success: true,
+		Data:    users,
 	})
 
 }
