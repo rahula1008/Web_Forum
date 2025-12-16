@@ -89,8 +89,6 @@ func init() {
 
 func main() {
 
-	// initializers.DB.MustExec(insertSampleQuery)
-
 	// topics := []models.Topic{}
 
 	// err := initializers.DB.Select(&topics, "select * from topics order by id asc")
@@ -113,5 +111,7 @@ func main() {
 	if err := m.Up(); err != nil {
 		log.Fatal(err)
 	}
+
+	initializers.DB.MustExec(insertSampleQuery)
 
 }

@@ -19,5 +19,6 @@ func main() {
 		})
 	})
 	routes.SetupTopicRoutes(router)
+	routes.SetupUserRoutes(router)
 	router.Run()
 }
