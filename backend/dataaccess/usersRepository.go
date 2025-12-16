@@ -15,3 +15,18 @@ func GetAllUsers() ([]models.User, error) {
 
 	return users, nil
 }
+
+func GetUserByID(id int) (*models.User, error) {
+	var user models.User
+
+	getUserByIDQuery := `SELECT * FROM users
+	WHERE ID = $1`
+
+	err := initializers.DB.Get(&user, getUserByIDQuery, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
