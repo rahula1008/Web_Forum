@@ -1,13 +1,16 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"os"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 	_ "github.com/jmoiron/sqlx"
 	"github.com/rahula1008/Web_Forum/initializers"
-	"github.com/rahula1008/Web_Forum/models"
+
+	"github.com/golang-migrate/migrate/v4"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
 var schema = `
@@ -86,17 +89,29 @@ func init() {
 
 func main() {
 
-	initializers.DB.MustExec(schema)
-	initializers.DB.MustExec(insertSampleQuery)
+	// initializers.DB.MustExec(insertSampleQuery)
 
-	topics := []models.Topic{}
+	// topics := []models.Topic{}
 
-	err := initializers.DB.Select(&topics, "select * from topics order by id asc")
+	// err := initializers.DB.Select(&topics, "select * from topics order by id asc")
+	// if err != nil {
+	// 	log.Println("Error selecting posts: ", err)
+	// }
+	// fmt.Println(topics)
+
+	// fmt.Println("Connected to DB")
+
+	DB_URL := os.Getenv("DB_URL")
+
+	m, err := migrate.New(
+		"file://migrate/migrations",
+		DB_URL)
+
 	if err != nil {
-		log.Println("Error selecting posts: ", err)
+		log.Fatal(err)
 	}
-	fmt.Println(topics)
-
-	fmt.Println("Connected to DB")
+	if err := m.Up(); err != nil {
+		log.Fatal(err)
+	}
 
 }
