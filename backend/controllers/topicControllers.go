@@ -27,6 +27,7 @@ const (
 	saveTopicFailedMessage             = "Failed to save topic"
 	failedToReadIDMessage              = "Failed to parse ID"
 	incorrectBodyForUpdateTopicMessage = "Incorrect body to update topic"
+	updateTopicFailedMessage           = "Failed to update topic"
 )
 
 func GetAllTopics(c *gin.Context) {
@@ -146,6 +147,13 @@ func UpdateTopic(c *gin.Context) {
 	}
 
 	updatedTopic.ID = topicID
+
+	err = validateTopic(updatedTopic)
+
+	if err != nil {
+		sendBadRequestResponse(c, updateTopicFailedMessage, err)
+		return
+	}
 
 	err = dataaccess.UpdateTopic(&updatedTopic)
 

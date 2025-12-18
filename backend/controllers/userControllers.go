@@ -139,6 +139,13 @@ func UpdateUser(c *gin.Context) {
 
 	updatedUser.ID = userID
 
+	err = validateUser(updatedUser)
+
+	if err != nil {
+		sendBadRequestResponse(c, updateUserFailedMessage, err)
+		return
+	}
+
 	err = dataaccess.UpdateUser(&updatedUser)
 	if err != nil {
 		sendInternalStatusServerError(c, updateUserFailedMessage, err)
