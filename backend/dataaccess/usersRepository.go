@@ -81,3 +81,27 @@ func SaveUserToDB(user *models.User) error {
 	return rows.Err()
 
 }
+
+func UpdateUser(user *models.User) error {
+	updateQuery := `
+	UPDATE users
+	SET username=:username, email=:email, password_hash=:password_hash
+	WHERE id = :id`
+
+	result, err := initializers.DB.NamedExec(updateQuery, user)
+
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return errors.New("update user: no rows affected")
+	}
+	return nil
+}

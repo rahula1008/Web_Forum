@@ -18,6 +18,11 @@ const (
 	getUserByIDFailedMessage          = "Failed to get this user ID"
 	searchUserByUsernameFailedMessage = "Failed to find users matching search"
 	createUserFailedMessage           = "Failed to create user"
+	updateUserFailedMessage           = "Failed to update user"
+)
+
+const (
+	updateUserSuccessMessage = "Successfully updated user"
 )
 
 func GetAllUsers(c *gin.Context) {
@@ -111,6 +116,35 @@ func CreateUser(c *gin.Context) {
 		Data:    user,
 		Code:    http.StatusCreated,
 	})
+}
+
+func UpdateUser(c *gin.Context) {
+	var updatedUser models.User
+
+	id := c.Param("id")
+
+	userID, err := strconv.Atoi(id)
+
+	if err != nil {
+		sendBadRequestResponse(c, updateUserFailedMessage, err)
+		return
+	}
+
+	err = c.ShouldBindJSON(&updatedUser)
+
+	if err != nil {
+		sendBadRequestResponse(c, updateUserFailedMessage, err)
+		return
+	}
+
+	updatedUser.ID = userID
+
+	err = dataaccess.UpdateUser(&updatedUser)
+	if err != nil {
+		sendInternalStatusServerError(c, updateUserFailedMessage, err)
+		return
+	}
+	SendStatusOKResponse(c, updateUserSuccessMessage)
 }
 
 func validateUser(user models.User) error {
