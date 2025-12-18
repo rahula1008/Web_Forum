@@ -1,8 +1,11 @@
 package controllers
 
 import (
+	"errors"
+	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rahula1008/Web_Forum/dataaccess"
@@ -10,10 +13,11 @@ import (
 )
 
 const (
-	getUsersFailedMessage      = "Failed to get all the users"
-	InvalidIDMessage           = "Failed to read ID"
-	getUserByIDFailedMessage   = "Failed to get this user ID"
-	searchUserByUsernameFailed = "Failed to find users matching search"
+	getUsersFailedMessage             = "Failed to get all the users"
+	InvalidIDMessage                  = "Failed to read ID"
+	getUserByIDFailedMessage          = "Failed to get this user ID"
+	searchUserByUsernameFailedMessage = "Failed to find users matching search"
+	createUserFailedMessage           = "Failed to create user"
 )
 
 func GetAllUsers(c *gin.Context) {
@@ -62,7 +66,8 @@ func SearchUserByUsername(c *gin.Context) {
 	users, err := dataaccess.SearchUserByUsername(searchUsername)
 
 	if err != nil {
-		sendInternalStatusServerError(c, searchUserByUsernameFailed, err)
+		sendInternalStatusServerError(c, searchUserByUsernameFailedMessage, err)
+		return
 	}
 
 	c.JSON(200, Response{
@@ -70,4 +75,56 @@ func SearchUserByUsername(c *gin.Context) {
 		Data:    users,
 	})
 
+}
+
+func CreateUser(c *gin.Context) {
+	var user models.User
+
+	err := c.ShouldBindJSON(&user)
+
+	if err != nil {
+		sendBadRequestResponse(c, createUserFailedMessage, err)
+		return
+	}
+
+	err = validateUser(user)
+
+	if err != nil {
+		sendBadRequestResponse(c, createUserFailedMessage, err)
+		return
+	}
+
+	user.CreatedAt = time.Now()
+	now := time.Now()
+	user.UpdatedAt = &now
+
+	if err = dataaccess.SaveUserToDB(&user); err != nil {
+		log.Printf("DB Error creating user: %v", err)
+
+		// Return a generic 500 server error to the client
+		sendInternalStatusServerError(c, createUserFailedMessage, err)
+		return
+	}
+
+	c.JSON(http.StatusCreated, Response{
+		Success: true,
+		Data:    user,
+		Code:    http.StatusCreated,
+	})
+}
+
+func validateUser(user models.User) error {
+	if user.Username == "" {
+		return errors.New("username cannot be blank")
+	}
+	if len(user.Username) > 30 {
+		return errors.New("username must be at most 30 characters")
+	}
+	if user.Email == "" {
+		return errors.New("email cannot be blank")
+	}
+	if len(user.Email) > 150 {
+		return errors.New("email cannot be more than 150 characters")
+	}
+	return nil
 }
