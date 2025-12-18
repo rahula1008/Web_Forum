@@ -19,6 +19,7 @@ const (
 	searchUserByUsernameFailedMessage = "Failed to find users matching search"
 	createUserFailedMessage           = "Failed to create user"
 	updateUserFailedMessage           = "Failed to update user"
+	deleteUserFailedMessage           = "Failed to delete user"
 )
 
 const (
@@ -152,6 +153,26 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 	SendStatusOKResponse(c, updateUserSuccessMessage)
+}
+
+func DeleteUser(c *gin.Context) {
+	id := c.Param("id")
+
+	userID, err := strconv.Atoi(id)
+
+	if err != nil {
+		sendBadRequestResponse(c, deleteUserFailedMessage, err)
+		return
+	}
+
+	err = dataaccess.DeleteUser(userID)
+
+	if err != nil {
+		sendInternalStatusServerError(c, deleteUserFailedMessage, err)
+		return
+	}
+
+	SendStatusNoContent(c)
 }
 
 func validateUser(user models.User) error {

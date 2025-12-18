@@ -105,3 +105,28 @@ func UpdateUser(user *models.User) error {
 	}
 	return nil
 }
+
+func DeleteUser(id int) error {
+	deleteQuery := `
+		DELETE FROM users
+		WHERE id=$1`
+
+	result, err := initializers.DB.Exec(deleteQuery, id)
+
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return errors.New("delete user: no rows affected")
+	}
+
+	return nil
+
+}

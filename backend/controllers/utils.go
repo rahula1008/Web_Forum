@@ -13,3 +13,10 @@ func SendStatusOKResponse(c *gin.Context, message string) {
 		Code:    http.StatusOK,
 	})
 }
+
+func SendStatusNoContent(c *gin.Context) {
+	c.JSON(http.StatusNoContent, Response{
+		Success: true,
+		Code:    http.StatusNoContent,
+	})
+}
