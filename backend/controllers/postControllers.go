@@ -10,9 +10,10 @@ import (
 )
 
 const (
-	getPostsFailedMessage    = "Failed to get all posts"
-	InvalidPostIDMessage     = "Failed to read ID"
-	getPostByIDFailedMessage = "Failed to get this post ID"
+	getPostsFailedMessage      = "Failed to get all posts"
+	InvalidPostIDMessage       = "Failed to read ID"
+	getPostByIDFailedMessage   = "Failed to get this post ID"
+	searchPostByTitleFailedMsg = "Failed to find posts matching the search"
 )
 
 func GetAllPosts(c *gin.Context) {
@@ -21,9 +22,7 @@ func GetAllPosts(c *gin.Context) {
 	posts, err := dataaccess.GetAllPosts()
 
 	if err != nil {
-		sendInternalStatusServerError(
-			c, getPostsFailedMessage, err,
-		)
+		sendInternalStatusServerError(c, getPostsFailedMessage, err)
 		return
 	}
 
@@ -50,5 +49,20 @@ func GetPostByID(c *gin.Context) {
 	c.JSON(http.StatusAccepted, Response{
 		Success: true,
 		Data:    post,
+	})
+}
+
+func SearchPostByTitle(c *gin.Context) {
+	searchTitle := c.Query("title")
+
+	posts, err := dataaccess.SearchPost(searchTitle)
+	if err != nil {
+		sendInternalStatusServerError(c, searchPostByTitleFailedMsg, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, Response{
+		Success: true,
+		Data:    posts,
 	})
 }
