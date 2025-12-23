@@ -21,5 +21,6 @@ func main() {
 	routes.SetupTopicRoutes(router)
 	routes.SetupUserRoutes(router)
 	routes.SetupPostRoutes(router)
+	routes.SetupCommentRoutes(router)
 	router.Run()
 }

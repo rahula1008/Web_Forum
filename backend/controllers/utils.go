@@ -14,11 +14,11 @@ type Response struct {
 	Code    int         `json:"code,omitempty"`
 }
 
-func SendStatusOKResponse(c *gin.Context, message string) {
+func SendStatusOKResponse(c *gin.Context, data any) {
 	c.JSON(http.StatusOK, Response{
 		Success: true,
-		Message: message,
 		Code:    http.StatusOK,
+		Data:    data,
 	})
 }
 
