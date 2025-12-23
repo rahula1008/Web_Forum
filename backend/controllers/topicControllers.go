@@ -153,6 +153,11 @@ func UpdateTopic(c *gin.Context) {
 		sendInternalStatusServerError(c, "Failed to update topic", err)
 	}
 
+	c.JSON(http.StatusOK, Response{
+		Success: true,
+		Data:    updatedTopic,
+	})
+
 }
 
 func DeleteTopic(c *gin.Context) {

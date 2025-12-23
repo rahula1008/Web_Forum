@@ -1,0 +1,4 @@
+ALTER TABLE posts
+ADD topic_id INT NOT NULL 
+REFERENCES topics(id) 
+ON DELETE CASCADE
