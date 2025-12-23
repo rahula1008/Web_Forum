@@ -31,6 +31,15 @@ func sendInternalStatusServerError(c *gin.Context, message string, err error) {
 	})
 }
 
+func sendBadRequestResponse(c *gin.Context, message string, err error) {
+	c.JSON(http.StatusBadRequest, Response{
+		Success: false,
+		Message: message,
+		Error:   err.Error(),
+		Code:    http.StatusBadRequest,
+	})
+}
+
 func SendStatusNoContent(c *gin.Context) {
 	c.JSON(http.StatusNoContent, Response{
 		Success: true,

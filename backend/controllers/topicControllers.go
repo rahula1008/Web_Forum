@@ -181,12 +181,3 @@ func DeleteTopic(c *gin.Context) {
 		Message: "Topic deleted successfully",
 	})
 }
-
-func sendBadRequestResponse(c *gin.Context, message string, err error) {
-	c.JSON(http.StatusBadRequest, Response{
-		Success: false,
-		Message: message,
-		Error:   err.Error(),
-		Code:    http.StatusBadRequest,
-	})
-}
