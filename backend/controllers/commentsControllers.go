@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"errors"
 	"net/http"
 	"strconv"
 
@@ -77,7 +76,7 @@ func CreateComment(c *gin.Context) {
 		return
 	}
 
-	if err := validateComment(comment); err != nil {
+	if err := models.ValidateComment(comment); err != nil {
 		sendBadRequestResponse(c, createCommentFailedMessage, err)
 		return
 	}
@@ -111,7 +110,7 @@ func UpdateComment(c *gin.Context) {
 
 	updated.ID = commentID
 
-	if err := validateComment(updated); err != nil {
+	if err := models.ValidateComment(updated); err != nil {
 		sendBadRequestResponse(c, updateCommentFailedMessage, err)
 		return
 	}
@@ -138,17 +137,4 @@ func DeleteComment(c *gin.Context) {
 	}
 
 	SendStatusNoContent(c)
-}
-
-func validateComment(comment models.Comment) error {
-	if comment.Body == "" {
-		return errors.New("body cannot be blank")
-	}
-	if comment.PostID <= 0 {
-		return errors.New("post_id must be valid")
-	}
-	if comment.CreatorID <= 0 {
-		return errors.New("creator_id must be valid")
-	}
-	return nil
 }

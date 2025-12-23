@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"errors"
 	"log"
 	"net/http"
 	"strconv"
@@ -91,7 +90,7 @@ func CreateTopic(c *gin.Context) {
 		return
 	}
 
-	err = validateTopic(topic)
+	err = models.ValidateTopic(topic)
 	if err != nil {
 		c.JSON(400, Response{
 			Success: false,
@@ -140,7 +139,7 @@ func UpdateTopic(c *gin.Context) {
 
 	updatedTopic.ID = topicID
 
-	err = validateTopic(updatedTopic)
+	err = models.ValidateTopic(updatedTopic)
 
 	if err != nil {
 		sendBadRequestResponse(c, updateTopicFailedMessage, err)
@@ -189,27 +188,5 @@ func sendBadRequestResponse(c *gin.Context, message string, err error) {
 		Message: message,
 		Error:   err.Error(),
 		Code:    http.StatusBadRequest,
-	})
-}
-
-func validateTopic(topic models.Topic) error {
-	if topic.Description == "" {
-		return errors.New("description cannot be blank")
-	}
-	if topic.Title == "" {
-		return errors.New("title cannot be blank")
-	}
-	if len(topic.Title) > 100 {
-		return errors.New("length of title must be at most 100")
-	}
-	return nil
-}
-
-func sendInternalStatusServerError(c *gin.Context, message string, err error) {
-	c.JSON(http.StatusInternalServerError, Response{
-		Success: false,
-		Message: message,
-		Error:   err.Error(),
-		Code:    http.StatusInternalServerError,
 	})
 }

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"errors"
 	"log"
 	"net/http"
 	"strconv"
@@ -93,7 +92,7 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	err = validateUser(user)
+	err = models.ValidateUser(user)
 
 	if err != nil {
 		sendBadRequestResponse(c, createUserFailedMessage, err)
@@ -140,7 +139,7 @@ func UpdateUser(c *gin.Context) {
 
 	updatedUser.ID = userID
 
-	err = validateUser(updatedUser)
+	err = models.ValidateUser(updatedUser)
 
 	if err != nil {
 		sendBadRequestResponse(c, updateUserFailedMessage, err)
@@ -173,20 +172,4 @@ func DeleteUser(c *gin.Context) {
 	}
 
 	SendStatusNoContent(c)
-}
-
-func validateUser(user models.User) error {
-	if user.Username == "" {
-		return errors.New("username cannot be blank")
-	}
-	if len(user.Username) > 30 {
-		return errors.New("username must be at most 30 characters")
-	}
-	if user.Email == "" {
-		return errors.New("email cannot be blank")
-	}
-	if len(user.Email) > 150 {
-		return errors.New("email cannot be more than 150 characters")
-	}
-	return nil
 }

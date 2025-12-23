@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"errors"
 	"log"
 	"net/http"
 	"strconv"
@@ -84,7 +83,7 @@ func CreatePost(c *gin.Context) {
 		return
 	}
 
-	if err := validatePost(post); err != nil {
+	if err := models.ValidatePost(post); err != nil {
 		sendBadRequestResponse(c, createPostFailedMessage, err)
 		return
 	}
@@ -119,7 +118,7 @@ func UpdatePost(c *gin.Context) {
 
 	updatedPost.ID = postID
 
-	if err := validatePost(updatedPost); err != nil {
+	if err := models.ValidatePost(updatedPost); err != nil {
 		sendBadRequestResponse(c, updatePostFailedMessage, err)
 		return
 	}
@@ -146,23 +145,4 @@ func DeletePost(c *gin.Context) {
 	}
 
 	SendStatusNoContent(c)
-}
-
-func validatePost(post models.Post) error {
-	if post.Title == "" {
-		return errors.New("title cannot be blank")
-	}
-	if len(post.Title) > 200 {
-		return errors.New("title must be at most 200 characters")
-	}
-	if post.Body == "" {
-		return errors.New("body cannot be blank")
-	}
-	if post.TopicID <= 0 {
-		return errors.New("topic_id must be valid")
-	}
-	if post.CreatorID <= 0 {
-		return errors.New("creator_id must be valid")
-	}
-	return nil
 }
