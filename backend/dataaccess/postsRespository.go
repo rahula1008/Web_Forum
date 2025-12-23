@@ -13,3 +13,12 @@ func GetAllPosts() ([]models.Post, error) {
 	}
 	return posts, nil
 }
+
+func GetPostByID(id int) (*models.Post, error) {
+	var post models.Post
+	getPostByIDQuery := `SELECT * FROM posts WHERE id = $1`
+	if err := initializers.DB.Get(&post, getPostByIDQuery, id); err != nil {
+		return nil, err
+	}
+	return &post, nil
+}

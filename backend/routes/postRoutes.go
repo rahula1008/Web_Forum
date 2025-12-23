@@ -7,7 +7,7 @@ import (
 
 func SetupPostRoutes(router *gin.Engine) {
 	router.GET("/posts", controllers.GetAllPosts)
-	// router.GET("/posts/:id", controllers.GetPostByID)
+	router.GET("/posts/:id", controllers.GetPostByID)
 	// router.GET("/posts/search", controllers.SearchPostByTitle)
 	// router.POST("/posts", controllers.CreatePost)
 	// router.PUT("/posts/:id", controllers.UpdatePost)
