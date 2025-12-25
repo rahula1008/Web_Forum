@@ -201,6 +201,7 @@ func Login(c *gin.Context) {
 	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(body.Password))
 
 	if err != nil {
+		// Don't send the err because you don't want to say whether the email or password is the issue
 		sendBadRequestResponse(c, badLoginMessage, nil)
 		return
 	}
