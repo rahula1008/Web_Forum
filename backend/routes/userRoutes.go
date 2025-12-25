@@ -14,4 +14,6 @@ func SetupUserRoutes(router *gin.Engine) {
 	router.POST("/users/login", controllers.Login)
 	router.PUT("/users/:id", controllers.UpdateUser)
 	router.DELETE("/users/:id", controllers.DeleteUser)
+	//Only for testing purposes
+	//router.GET("/users/validate", middleware.RequireAuth, controllers.Validate)
 }

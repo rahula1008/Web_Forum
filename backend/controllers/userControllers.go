@@ -277,3 +277,14 @@ func DeleteUser(c *gin.Context) {
 
 	SendStatusNoContent(c)
 }
+
+//ONLY FOR TESTING PURPOSES
+// func Validate(c *gin.Context) {
+
+// 	user, _ := c.Get("user")
+
+// 	c.JSON(http.StatusOK, gin.H{
+// 		"message": "I'm logged in",
+// 		"user":    user,
+// 	})
+// }
