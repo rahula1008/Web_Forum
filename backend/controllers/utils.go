@@ -22,6 +22,13 @@ func SendStatusOKResponse(c *gin.Context, data any) {
 	})
 }
 
+func sendStatusCreatedResponseUser(c *gin.Context) {
+	c.JSON(http.StatusCreated, Response{
+		Success: true,
+		Code:    http.StatusCreated,
+	})
+}
+
 func sendInternalStatusServerError(c *gin.Context, message string, err error) {
 	c.JSON(http.StatusInternalServerError, Response{
 		Success: false,

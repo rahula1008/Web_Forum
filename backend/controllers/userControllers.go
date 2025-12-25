@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rahula1008/Web_Forum/dataaccess"
 	"github.com/rahula1008/Web_Forum/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
 const (
@@ -19,6 +20,9 @@ const (
 	createUserFailedMessage           = "Failed to create user"
 	updateUserFailedMessage           = "Failed to update user"
 	deleteUserFailedMessage           = "Failed to delete user"
+	failedToReadBodyMessage           = "Failed to read body of user"
+	failedToHashPasswordMessage       = "Failed to hash password"
+	invalidUserMessage                = "Invalid fields for a user"
 )
 
 const (
@@ -116,6 +120,54 @@ func CreateUser(c *gin.Context) {
 		Data:    user,
 		Code:    http.StatusCreated,
 	})
+}
+
+func SignUp(c *gin.Context) {
+
+	// Use this since the password that comes in is not hashed so it won't bind
+	// to the user model (which expects password_hash)
+	var body struct {
+		Email    string `json:"email"`
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+	//Get the username, email, and password off req body
+
+	if err := c.ShouldBindJSON(&body); err != nil {
+		sendBadRequestResponse(c, failedToReadBodyMessage, err)
+		return
+	}
+
+	//Hash the password
+	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), bcrypt.DefaultCost)
+	if err != nil {
+		sendBadRequestResponse(c, failedToHashPasswordMessage, err)
+		return
+	}
+
+	//Create the user
+	user := models.User{
+		Username:     body.Username,
+		Email:        body.Email,
+		PasswordHash: string(hash),
+	}
+
+	//Validate the user
+	if err = models.ValidateUser(user); err != nil {
+		sendBadRequestResponse(c, invalidUserMessage, err)
+		return
+	}
+
+	//Save the user to the database
+	if err = dataaccess.SaveUserToDB(&user); err != nil {
+		log.Printf("DB Error creating user: %v", err)
+
+		// Return a generic 500 server error to the client
+		sendInternalStatusServerError(c, createUserFailedMessage, err)
+		return
+	}
+	// Respond
+	sendStatusCreatedResponseUser(c)
 }
 
 func UpdateUser(c *gin.Context) {
