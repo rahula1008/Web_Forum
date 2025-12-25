@@ -34,6 +34,21 @@ func GetUserByID(id int) (*models.User, error) {
 	return &user, nil
 }
 
+func GetUserByEmail(email string) (*models.User, error) {
+	var user models.User
+
+	getUserByIDQuery := `SELECT * FROM users
+	WHERE email = $1`
+
+	err := initializers.DB.Get(&user, getUserByIDQuery, email)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
 func SearchUserByUsername(searchUsername string) ([]models.User, error) {
 
 	var users []models.User

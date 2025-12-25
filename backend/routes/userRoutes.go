@@ -11,6 +11,7 @@ func SetupUserRoutes(router *gin.Engine) {
 	router.GET("/users/search", controllers.SearchUserByUsername)
 	router.POST("/users", controllers.CreateUser)
 	router.POST("/users/signup", controllers.SignUp)
+	router.POST("/users/login", controllers.Login)
 	router.PUT("/users/:id", controllers.UpdateUser)
 	router.DELETE("/users/:id", controllers.DeleteUser)
 }

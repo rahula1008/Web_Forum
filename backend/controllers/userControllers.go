@@ -3,10 +3,12 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/rahula1008/Web_Forum/dataaccess"
 	"github.com/rahula1008/Web_Forum/models"
 	"golang.org/x/crypto/bcrypt"
@@ -23,6 +25,8 @@ const (
 	failedToReadBodyMessage           = "Failed to read body of user"
 	failedToHashPasswordMessage       = "Failed to hash password"
 	invalidUserMessage                = "Invalid fields for a user"
+	badLoginMessage                   = "Invalid email or password"
+	failedToCreateTokenMessage        = "Failed to create token"
 )
 
 const (
@@ -168,6 +172,53 @@ func SignUp(c *gin.Context) {
 	}
 	// Respond
 	sendStatusCreatedResponseUser(c)
+}
+
+func Login(c *gin.Context) {
+	//Get the username, email, and password off req body
+	var body struct {
+		Email    string `json:"email"`
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+
+	if err := c.ShouldBindJSON(&body); err != nil {
+		sendBadRequestResponse(c, failedToReadBodyMessage, err)
+		return
+	}
+	// Look up requested user
+	user, err := dataaccess.GetUserByEmail(body.Email)
+	if err != nil {
+		sendBadRequestResponse(c, badLoginMessage, nil)
+		return
+	}
+
+	if user.ID == 0 {
+		sendBadRequestResponse(c, badLoginMessage, nil)
+		return
+	}
+	// Compare send in pass with saved user pass hash
+	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(body.Password))
+
+	if err != nil {
+		sendBadRequestResponse(c, badLoginMessage, nil)
+		return
+	}
+	//Generate a JWT Token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub": user.ID,
+		"exp": time.Now().Add(time.Hour * 12).Unix(),
+	})
+
+	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET")))
+	if err != nil {
+		sendBadRequestResponse(c, failedToCreateTokenMessage, err)
+		return
+	}
+	//Send it back
+	c.SetSameSite((http.SameSiteLaxMode))
+	c.SetCookie("Authorization", tokenString, 3600*12, "", "", false, true)
+	c.JSON(http.StatusOK, gin.H{})
 }
 
 func UpdateUser(c *gin.Context) {
