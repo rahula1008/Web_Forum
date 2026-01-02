@@ -1,13 +1,55 @@
+import { useEffect, useState } from "react";
+import "./HomePage.css";
+import axios from "axios";
+import type { Topic } from "../../types/topic";
+
+
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const getAllTopicsURL = `${BACKEND_URL}/topics`;
+
+
 export default function HomePage() {
+    const [topics, setTopics] = useState<Topic[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const loadTopics = async () => {
+            setIsLoading(true);
+            try {
+                const response = await axios.get(getAllTopicsURL);
+
+                console.log("Response: ", response);
+                setTopics(response.data.data);
+
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        loadTopics();
+    }, []);
+
     return (
-        <>
-            <div>
-                <title>Home Page</title>
-            </div>
-            <div>
-                <h1>NUS FORUMS</h1>
-                <p>HI THERE</p>
-            </div>
-        </>
-    )
+        <div className="home-page">
+            <header className="home-header">
+                <h1>WEB FORUM</h1>
+            </header>
+            <section className="topics-panel">
+                <h2 className="topics-title">Topics</h2>
+                <div className="topics-list">
+                    {isLoading && <p className="topics-state">Loading topics...</p>}
+                    {!isLoading && topics.length === 0 && (
+                        <p className="topics-state">No topics yet.</p>
+                    )}
+                    {!isLoading &&
+                        topics.map((topic) => (
+                            <div key={topic.id} className="topic-item">
+                                {topic.title}
+                            </div>
+                        ))}
+                </div>
+            </section>
+        </div>
+    );
 }

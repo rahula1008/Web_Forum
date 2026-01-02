@@ -1,0 +1,37 @@
+.topics-panel {
+    width: min(720px, 100%);
+    background: #ffffff;
+    border: 1px solid #dde3ee;
+    border-radius: 12px;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.topics-title {
+    margin: 0 0 12px;
+    font-size: 20px;
+    color: #3c4858;
+}
+
+.topics-list {
+    max-height: 360px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-right: auto;
+    padding-left:auto;
+}
+
+.topic-item {
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: #f3f6fb;
+    border: 1px solid #e2e8f0;
+}
+
+.topics-state {
+    margin: 0;
+    color: #6b7280;
+}

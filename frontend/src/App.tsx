@@ -6,6 +6,7 @@ function App() {
   return (
     <Routes>
         <Route index element = {<HomePage />}></Route>
+        <Route path='/topic' element={<p>hello</p>} />
     </Routes>
   )
 }
