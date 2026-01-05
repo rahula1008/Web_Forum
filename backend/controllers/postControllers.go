@@ -146,3 +146,20 @@ func DeletePost(c *gin.Context) {
 
 	SendStatusNoContent(c)
 }
+
+func GetPostsByTopicID(c *gin.Context) {
+	topicIDStr := c.Param("id")
+	topicID, err := strconv.Atoi(topicIDStr)
+	if err != nil {
+		sendBadRequestResponse(c, "Failed to read topic ID", err)
+		return
+	}
+
+	posts, err := dataaccess.GetPostsByTopicID(topicID)
+	if err != nil {
+		sendInternalStatusServerError(c, "Failed to get posts for topic", err)
+		return
+	}
+
+	SendStatusOKResponse(c, posts)
+}

@@ -111,3 +111,17 @@ func DeletePost(id int) error {
 
 	return nil
 }
+
+func GetPostsByTopicID(topicID int) ([]models.Post, error) {
+	posts := []models.Post{}
+	q := `
+		SELECT *
+		FROM posts
+		WHERE topic_id = $1
+		ORDER BY created_at DESC
+	`
+	if err := initializers.DB.Select(&posts, q, topicID); err != nil {
+		return nil, err
+	}
+	return posts, nil
+}
