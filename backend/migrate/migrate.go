@@ -99,11 +99,11 @@ func main() {
 
 	// fmt.Println("Connected to DB")
 
-	DB_URL := os.Getenv("DB_URL")
+	DB_URI := os.Getenv("DB_URI")
 
 	m, err := migrate.New(
 		"file://migrate/migrations",
-		DB_URL)
+		DB_URI)
 
 	if err != nil {
 		log.Fatal(err)
