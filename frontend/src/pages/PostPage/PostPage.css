@@ -1,0 +1,113 @@
+.post-page {
+    min-height: 100vh;
+    padding: 36px 24px 60px;
+    background: radial-gradient(circle at top, #f7f0e6 0%, #efe6d8 45%, #e6d9c6 100%);
+    color: #1f1812;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    font-family: "Merriweather", "Georgia", serif;
+}
+
+.post-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.post-title {
+    margin: 0;
+    font-size: 38px;
+}
+
+.post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6a5c4a;
+}
+
+.post-body {
+    background: #fffaf4;
+    border-radius: 18px;
+    padding: 22px 24px;
+    box-shadow: 0 16px 36px rgba(31, 24, 18, 0.14);
+    line-height: 1.7;
+}
+
+.post-state {
+    margin: 0;
+    color: #6a5c4a;
+}
+
+.comments-panel {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 22px 24px 28px;
+    box-shadow: 0 10px 24px rgba(31, 24, 18, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.comments-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.comment-button {
+    border: 1px solid #1f1812;
+    border-radius: 999px;
+    padding: 8px 18px;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: "Merriweather", "Georgia", serif;
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.comment-card {
+    border: 1px solid #eadfce;
+    border-radius: 16px;
+    padding: 14px 16px;
+    background: #fffaf4;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.comment-body {
+    margin: 0;
+    color: #2f261d;
+}
+
+.comment-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7a6a58;
+}
+
+@media (max-width: 720px) {
+    .post-title {
+        font-size: 28px;
+    }
+
+    .comments-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
