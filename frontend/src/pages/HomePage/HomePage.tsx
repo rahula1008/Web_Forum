@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 import "./HomePage.css";
 import axios from "axios";
 import type { Topic } from "../../types/topic";
@@ -19,7 +20,7 @@ export default function HomePage() {
             try {
                 const response = await axios.get(getAllTopicsURL);
 
-                console.log("Response: ", response);
+                //console.log("Response: ", response);
                 setTopics(response.data.data);
 
             } finally {
@@ -45,7 +46,9 @@ export default function HomePage() {
                     {!isLoading &&
                         topics.map((topic) => (
                             <div key={topic.id} className="topic-item">
-                                {topic.title}
+                                <Link className="topic-link" to={`/topics/${topic.id}/posts`}>
+                                    {topic.title}
+                                </Link>
                             </div>
                         ))}
                 </div>

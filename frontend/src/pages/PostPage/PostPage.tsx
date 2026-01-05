@@ -43,6 +43,7 @@ export default function PostPage() {
     return (
         <div className="post-page">
             <header className="post-hero">
+                <p className="topic-kicker">Post</p>
                 <h1 className="post-title">{post?.title ?? "Untitled Post"}</h1>
                 <div className="post-meta">
                     <span>Topic {id ?? "-"}</span>
@@ -68,11 +69,11 @@ export default function PostPage() {
                 </div>
                 <div className="comments-list">
                     {isLoading && <p className="post-state">Loading comments...</p>}
-                    {!isLoading && comments.length === 0 && (
+                    {!isLoading && comments?.length === 0 && (
                         <p className="post-state">No comments yet.</p>
                     )}
                     {!isLoading &&
-                        comments.map((comment) => (
+                        comments?.map((comment) => (
                             <CommentItem key={comment.id} comment={comment} />
                         ))}
                 </div>

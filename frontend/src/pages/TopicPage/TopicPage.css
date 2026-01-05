@@ -80,6 +80,15 @@
     color: var(--text-secondary);
 }
 
+.post-card-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.post-card-link:hover {
+    text-decoration: underline;
+}
+
 .post-card-meta {
     display: flex;
     flex-wrap: wrap;
@@ -90,6 +99,7 @@
     color: var(--text-soft);
 }
 
+/* In case of phone use */
 @media (max-width: 720px) {
     .posts-header {
         flex-direction: column;
