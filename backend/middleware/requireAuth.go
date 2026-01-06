@@ -16,6 +16,7 @@ func RequireAuth(c *gin.Context) {
 
 	if err != nil {
 		c.AbortWithStatus(http.StatusUnauthorized)
+		return
 	}
 
 	//Decoding the token
@@ -24,21 +25,25 @@ func RequireAuth(c *gin.Context) {
 	}, jwt.WithValidMethods([]string{jwt.SigningMethodHS256.Alg()}))
 	if err != nil {
 		c.AbortWithStatus(http.StatusUnauthorized)
+		return
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
 		//Check the exp
 		if float64(time.Now().Unix()) > claims["exp"].(float64) {
 			c.AbortWithStatus(http.StatusUnauthorized)
+			return
 		}
 
 		// Get the user
 		user, err := dataaccess.GetUserByID(int(claims["sub"].(float64)))
 		if err != nil {
 			c.AbortWithStatus(http.StatusUnauthorized)
+			return
 		}
 		if user.ID == 0 {
 			c.AbortWithStatus(http.StatusUnauthorized)
+			return
 		}
 
 		//Attach to req

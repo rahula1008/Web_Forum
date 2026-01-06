@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,6 +13,14 @@ type Response struct {
 	Message string      `json:"message,omitempty"`
 	Error   string      `json:"error,omitempty"`
 	Code    int         `json:"code,omitempty"`
+}
+
+type UserResponse struct {
+	ID        int        `json:"id"`
+	Username  string     `json:"username"`
+	Email     string     `json:"email"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt *time.Time `json:"updated_at"`
 }
 
 func SendStatusOKResponse(c *gin.Context, data any) {
@@ -61,5 +70,12 @@ func SendStatusNoContent(c *gin.Context) {
 	c.JSON(http.StatusNoContent, Response{
 		Success: true,
 		Code:    http.StatusNoContent,
+	})
+}
+
+func sendStatusUnauthorized(c *gin.Context) {
+	c.JSON(http.StatusUnauthorized, Response{
+		Success: false,
+		Code:    http.StatusUnauthorized,
 	})
 }

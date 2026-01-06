@@ -278,6 +278,33 @@ func DeleteUser(c *gin.Context) {
 	SendStatusNoContent(c)
 }
 
+func GetMe(c *gin.Context) {
+	user, exists := c.Get("user")
+	userIDValue := user.(*models.User).ID
+	if !exists {
+		sendStatusUnauthorized(c)
+		return
+	}
+	// userID := userIDValue.(int)
+
+	user, err := dataaccess.GetUserByID(userIDValue)
+	if err != nil {
+		sendInternalStatusServerError(c, "Failed to get user", nil)
+		return
+	}
+
+	//Remove password_hash
+	resp := UserResponse{
+		ID:        user.(*models.User).ID,
+		Username:  user.(*models.User).Username,
+		Email:     user.(*models.User).Email,
+		CreatedAt: user.(*models.User).CreatedAt,
+		UpdatedAt: user.(*models.User).UpdatedAt,
+	}
+
+	SendStatusOKResponse(c, resp)
+}
+
 //ONLY FOR TESTING PURPOSES
 // func Validate(c *gin.Context) {
 
