@@ -222,6 +222,13 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
+func Logout(c *gin.Context) {
+	c.SetCookie(
+		"Authorization", "", -1, "", "", true, true,
+	)
+	c.Status(http.StatusNoContent)
+}
+
 func UpdateUser(c *gin.Context) {
 	var updatedUser models.User
 
