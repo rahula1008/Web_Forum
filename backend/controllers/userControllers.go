@@ -178,7 +178,6 @@ func Login(c *gin.Context) {
 	//Get the username, email, and password off req body
 	var body struct {
 		Email    string `json:"email"`
-		Username string `json:"username"`
 		Password string `json:"password"`
 	}
 
