@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import "./HomePage.css";
 import axios from "axios";
 import type { Topic } from "../../types/topic";
+import { useAuth } from "../../auth/useAuth";
 
 
 
@@ -11,6 +12,7 @@ const getAllTopicsURL = `${BACKEND_URL}/topics`;
 
 
 export default function HomePage() {
+    const {isAuthed, user} = useAuth();
     const [topics, setTopics] = useState<Topic[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -36,6 +38,9 @@ export default function HomePage() {
             <header className="home-header">
                 <h1>WEB FORUM</h1>
             </header>
+            <div>
+                <p>Test user: {isAuthed ?? user?.email}</p>
+            </div>
             <section className="topics-panel">
                 <h2 className="topics-title">Topics</h2>
                 <div className="topics-list">
