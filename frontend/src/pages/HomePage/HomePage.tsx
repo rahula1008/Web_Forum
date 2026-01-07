@@ -4,6 +4,7 @@ import "./HomePage.css";
 import axios from "axios";
 import type { Topic } from "../../types/topic";
 import { useAuth } from "../../auth/useAuth";
+import Header from "../../components/Header/Header";
 
 
 
@@ -35,10 +36,12 @@ export default function HomePage() {
 
     return (
         <div className="home-page">
-            <header className="home-header">
+            {/* <header className="home-header">
                 <h1>WEB FORUM</h1>
-            </header>
+            </header> */}
+            <Header />
             <div>
+                <p>Hello</p>
                 <p>Test user: {isAuthed ?? user?.email}</p>
             </div>
             <section className="topics-panel">
