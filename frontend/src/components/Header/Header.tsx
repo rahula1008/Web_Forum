@@ -2,7 +2,15 @@ import { Link } from "react-router";
 import { useAuth } from "../../auth/useAuth";
 import "./Header.css";
 
-const UserLoggedInHeader = () => {
+type HeaderProps = {
+  typeOfPage?: string;
+  centerText?: string;
+};
+
+const defaultTypeOfPage = "Home Page";
+
+
+const UserLoggedInHeader = ({typeOfPage = defaultTypeOfPage, centerText = "PeerPrep"}: HeaderProps) => {
     const { user, logout } = useAuth();
 
     const handleLogout = async () => {
@@ -14,6 +22,10 @@ const UserLoggedInHeader = () => {
             <div className="left-section">
                 <Link to="/" className="header-link">Home</Link>
             </div>
+            <div className="header">
+                <p className="kicker">{typeOfPage}</p>
+                <h1 className="title">{centerText || "PeerPrep"}</h1>
+            </div>
             <div className="right-section">
                 <p>Hi {user && user.username}</p>
                 <button className="header-action" type="button" onClick={handleLogout}>
@@ -24,13 +36,17 @@ const UserLoggedInHeader = () => {
     )
 }
 
-const UserNotLoggedInHeader = () => {
+const UserNotLoggedInHeader = ({typeOfPage = defaultTypeOfPage, centerText = "PeerPrep"}: HeaderProps) => {
     return (
         <header>
             <div className='left-section'>
                 <Link to="/" className="header-link">
                     PeerPrep
                 </Link>
+            </div>
+            <div className="header">
+                <p className="kicker">{typeOfPage}</p>
+                <h1 className="title">{centerText || "PeerPrep"}</h1>
             </div>
             <div className='right-section'>
                 <Link className="header-action" to='/login'>Log In</Link>
@@ -39,10 +55,12 @@ const UserNotLoggedInHeader = () => {
     );
 }
 
-export default function Header() {
+export default function Header({typeOfPage = defaultTypeOfPage, centerText = "PeerPrep"}: HeaderProps) {
     const { isAuthed } = useAuth();
 
     return (
-        isAuthed ? <UserLoggedInHeader /> : <UserNotLoggedInHeader />
+        isAuthed 
+            ? <UserLoggedInHeader typeOfPage={typeOfPage} centerText={centerText} /> 
+            : <UserNotLoggedInHeader typeOfPage={typeOfPage} centerText={centerText}/>
     )
 }

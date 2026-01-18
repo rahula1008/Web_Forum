@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import "./HomePage.css";
 import type { Topic } from "../../types/topic";
-import { useAuth } from "../../auth/useAuth";
 import Header from "../../components/Header/Header";
 import { api } from "../../auth/client";
 
@@ -11,7 +10,6 @@ const getAllTopicsURL = `/topics`;
 
 
 export default function HomePage() {
-    const {isAuthed, user} = useAuth();
     const [topics, setTopics] = useState<Topic[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -34,14 +32,9 @@ export default function HomePage() {
 
     return (
         <div className="home-page">
-            {/* <header className="home-header">
-                <h1>WEB FORUM</h1>
-            </header> */}
+            
             <Header />
-            <div>
-                <p>Hello</p>
-                <p>Test user: {isAuthed ? user?.email : ""}</p>
-            </div>
+            
             <section className="topics-panel">
                 <h2 className="topics-title">Topics</h2>
                 <div className="topics-list">

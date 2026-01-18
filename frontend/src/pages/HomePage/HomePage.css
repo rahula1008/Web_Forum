@@ -27,6 +27,7 @@
     padding: 24px;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 10px;
     box-shadow: 0 12px 30px var(--surface-shadow);
 }
 

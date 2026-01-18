@@ -53,3 +53,21 @@ header {
   transform: translateY(-1px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
+
+.header {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 12px;
+    margin: 0;
+}
+
+.title {
+    font-size: 36px;
+    margin: 0;
+}

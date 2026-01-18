@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { register } from "../../auth/authApi";
+import Header from "../../components/Header/Header";
 import "./RegisterPage.css";
 
 export default function RegisterPage() {
@@ -38,6 +39,7 @@ export default function RegisterPage() {
 
     return (
         <main className="register-page">
+            <Header />
             <section className="register-hero">
                 <div className="register-hero-content">
                     <p className="register-eyebrow">Create an account</p>

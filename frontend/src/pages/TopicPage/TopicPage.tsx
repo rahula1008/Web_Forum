@@ -5,6 +5,7 @@ import PostItem from "./components/PostItem";
 import type { Post } from "../../types/post";
 import type { Topic } from "../../types/topic";
 import { api } from "../../auth/client";
+import Header from "../../components/Header/Header";
 
 
 
@@ -35,10 +36,8 @@ export default function TopicPage() {
 
     return (
         <div className="topic-page">
-            <header className="topic-header">
-                <p className="topic-kicker">Topic</p>
-                <h1 className="topic-title">{topic?.title ?? "Untitled"}</h1>
-            </header>
+            <Header typeOfPage="Topic" centerText={topic?.title ?? ""} />
+            
             <section className="posts-panel">
                 <div className="posts-header">
                     <h2>Posts</h2>

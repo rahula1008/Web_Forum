@@ -5,6 +5,7 @@ import type { Post } from "../../types/post";
 import type { Comment } from "../../types/comment";
 import CommentItem from "./components/CommentItem";
 import { api } from "../../auth/client";
+import Header from "../../components/Header/Header";
 
 export default function PostPage() {
     const { id, postId } = useParams();
@@ -38,23 +39,20 @@ export default function PostPage() {
         ? new Date(post.created_at).toLocaleDateString()
         : "";
 
+    const typeOfPage = "Post";
+	const centerText = post?.title;
+
     return (
         <div className="post-page">
-            <header className="post-hero">
-                <p className="topic-kicker">Post</p>
-                <h1 className="post-title">{post?.title ?? "Untitled Post"}</h1>
-                <div className="post-meta">
-                    <span>Topic {id ?? "-"}</span>
-                    <span>By User {post?.creator_id ?? "-"}</span>
-                    <span>{createdLabel}</span>
-                </div>
-            </header>
-
+            <Header typeOfPage={typeOfPage} centerText=" "/>
+            
+			
             <section className="post-body">
                 {isLoading && <p className="post-state">Loading post...</p>}
                 {!isLoading && !post && (
                     <p className="post-state">Post not found.</p>
                 )}
+				{!isLoading && post && <p className="post-title">{post.title}</p>}
                 {!isLoading && post && <p>{post.body}</p>}
             </section>
 
