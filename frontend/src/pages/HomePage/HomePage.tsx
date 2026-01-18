@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import "./HomePage.css";
-import axios from "axios";
 import type { Topic } from "../../types/topic";
 import { useAuth } from "../../auth/useAuth";
 import Header from "../../components/Header/Header";
+import { api } from "../../auth/client";
 
 
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-const getAllTopicsURL = `${BACKEND_URL}/topics`;
+const getAllTopicsURL = `/topics`;
 
 
 export default function HomePage() {
@@ -21,7 +19,7 @@ export default function HomePage() {
         const loadTopics = async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get(getAllTopicsURL);
+                const response = await api.get(getAllTopicsURL);
 
                 //console.log("Response: ", response);
                 setTopics(response.data.data);
@@ -42,7 +40,7 @@ export default function HomePage() {
             <Header />
             <div>
                 <p>Hello</p>
-                <p>Test user: {isAuthed ?? user?.email}</p>
+                <p>Test user: {isAuthed ? user?.email : ""}</p>
             </div>
             <section className="topics-panel">
                 <h2 className="topics-title">Topics</h2>

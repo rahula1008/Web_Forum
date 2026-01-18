@@ -1,0 +1,166 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Space+Grotesk:wght@400;500;600&display=swap");
+
+.register-page {
+    min-height: 100vh;
+    padding: 48px 20px;
+    background: linear-gradient(135deg, #f4ede1 0%, #e9f2ff 50%, #fef6ea 100%);
+    font-family: "Space Grotesk", sans-serif;
+    color: #1f2430;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-hero {
+    width: min(1100px, 100%);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 32px;
+    align-items: center;
+}
+
+.register-hero-content {
+    position: relative;
+    padding: 24px;
+}
+
+.register-hero-content::before {
+    content: "";
+    position: absolute;
+    inset: -10% -5% 55% -25%;
+    background: radial-gradient(circle, rgba(173, 220, 209, 0.5), transparent 70%);
+    z-index: -1;
+    filter: blur(2px);
+}
+
+.register-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2f6a62;
+    margin: 0 0 12px;
+}
+
+.register-title {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(32px, 3vw, 46px);
+    margin: 0 0 16px;
+    color: #1b1c2a;
+}
+
+.register-subtitle {
+    margin: 0;
+    line-height: 1.6;
+    font-size: 16px;
+    color: #3b4254;
+    max-width: 440px;
+}
+
+.register-card {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 25px 60px rgba(31, 36, 48, 0.15);
+    backdrop-filter: blur(12px);
+    animation: float-in 0.7s ease-out;
+}
+
+.register-form {
+    display: grid;
+    gap: 18px;
+}
+
+.register-field {
+    display: grid;
+    gap: 8px;
+    font-size: 14px;
+    color: #2e3442;
+    font-weight: 500;
+}
+
+.register-field input {
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #d9dee8;
+    background: #fff;
+    font-size: 15px;
+    font-family: "Space Grotesk", sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.register-field input:focus {
+    outline: none;
+    border-color: #2f6a62;
+    box-shadow: 0 0 0 3px rgba(47, 106, 98, 0.2);
+}
+
+.register-error {
+    margin: 0;
+    padding: 10px 12px;
+    background: #fde9e7;
+    border-radius: 10px;
+    color: #9e2b24;
+    font-size: 13px;
+}
+
+.register-submit {
+    margin-top: 4px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: none;
+    background: #1b1c2a;
+    color: #fffaf3;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.register-submit:disabled {
+    cursor: progress;
+    opacity: 0.7;
+}
+
+.register-submit:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(27, 28, 42, 0.18);
+}
+
+.register-footer {
+    margin: 18px 0 0;
+    font-size: 14px;
+    color: #4d5466;
+}
+
+.register-footer a {
+    color: #2f6a62;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.register-footer a:hover {
+    text-decoration: underline;
+}
+
+@keyframes float-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 720px) {
+    .register-page {
+        padding: 32px 16px;
+    }
+
+    .register-card {
+        padding: 24px;
+    }
+}

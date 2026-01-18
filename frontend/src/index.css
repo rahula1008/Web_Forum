@@ -1,6 +1,7 @@
 :root {
     font-family: "Merriweather", "Georgia", serif;
     color: #1f1812;
+    --header-height: 20px;
     --page-bg: radial-gradient(circle at top, #f7f0e6 0%, #efe6d8 45%, #e6d9c6 100%);
     --surface: #fffaf4;
     --surface-strong: #ffffff;
@@ -24,4 +25,5 @@ body {
     min-height: 100%;
     background: var(--page-bg);
     color: var(--ink);
+    padding-top: var(--header-height);
 }

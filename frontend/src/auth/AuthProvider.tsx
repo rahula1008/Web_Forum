@@ -28,9 +28,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         loadMe();
     }, []);
 
-    const login = async (username: string, password: string) => {
-        const me = await apiLogin(username, password); // cookie set by backend
-        setUser(me);
+    const login = async (email: string, password: string) => {
+        await apiLogin(email, password); // cookie set by backend
+        await refreshMe();
     };
 
     const logout = async () => {
@@ -52,5 +52,3 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
-
-

@@ -7,7 +7,7 @@ type AuthContextValue = {
     isLoading: boolean;
     isAuthed: boolean;
     refreshMe: () => Promise<void>;
-    login: (username: string, password: string) => Promise<void>;
+    login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
 };
 

@@ -4,15 +4,14 @@ import "./TopicPage.css";
 import PostItem from "./components/PostItem";
 import type { Post } from "../../types/post";
 import type { Topic } from "../../types/topic";
-import axios from "axios";
+import { api } from "../../auth/client";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 
 export default function TopicPage() {
     const { id } = useParams();
-    const getAllPostsURL = `${BACKEND_URL}/topics/${id}/posts`;
-    const getTopicDetails = `${BACKEND_URL}/topics/${id}`;
+    const getAllPostsURL = `/topics/${id}/posts`;
+    const getTopicDetails = `/topics/${id}`;
     const [posts, setPosts] = useState<Post[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [topic, setTopic] = useState<Topic>();
@@ -21,10 +20,10 @@ export default function TopicPage() {
         const loadPostsAndTopic = async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get(getAllPostsURL)
+                const response = await api.get(getAllPostsURL)
                 setPosts(response.data.data)
 
-                const topicData = await axios.get(getTopicDetails)
+                const topicData = await api.get(getTopicDetails)
                 setTopic(topicData.data.data)
             } finally {
                 setIsLoading(false);

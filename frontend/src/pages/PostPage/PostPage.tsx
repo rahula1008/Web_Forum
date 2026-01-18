@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import axios from "axios";
 import "./PostPage.css";
 import type { Post } from "../../types/post";
 import type { Comment } from "../../types/comment";
 import CommentItem from "./components/CommentItem";
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+import { api } from "../../auth/client";
 
 export default function PostPage() {
     const { id, postId } = useParams();
@@ -14,18 +12,18 @@ export default function PostPage() {
     const [comments, setComments] = useState<Comment[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const getPostDetailsURL = `${BACKEND_URL}/posts/${postId}`;
+    const getPostDetailsEndpoint = `/posts/${postId}`;
 
-    const getCommentsURL = `${BACKEND_URL}/posts/${postId}/comments`;
+    const getCommentsEndpoint = `/posts/${postId}/comments`;
 
     useEffect(() => {
         const loadPostAndComments = async () => {
             setIsLoading(true);
             try {
-                const postResponse = await axios.get(getPostDetailsURL);
+                const postResponse = await api.get(getPostDetailsEndpoint);
                 setPost(postResponse.data.data);
 
-                const commentsResponse = await axios.get(getCommentsURL);
+                const commentsResponse = await api.get(getCommentsEndpoint);
                 setComments(commentsResponse.data.data);
 
             } finally {
@@ -34,7 +32,7 @@ export default function PostPage() {
         };
 
         loadPostAndComments();
-    }, [getPostDetailsURL, getCommentsURL]);
+    }, [getPostDetailsEndpoint, getCommentsEndpoint]);
 
     const createdLabel = post?.created_at
         ? new Date(post.created_at).toLocaleDateString()
