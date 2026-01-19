@@ -37,6 +37,143 @@
     color: var(--ink);
 }
 
+.topics-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.topics-header .topics-title {
+    margin: 0;
+}
+
+.create-topic-toggle {
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: inherit;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.create-topic-toggle:hover {
+    border-color: var(--accent, #2f6fed);
+}
+
+.create-topic-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.create-topic-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.create-topic-field input,
+.create-topic-field textarea {
+    border: 1px solid var(--surface-border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--surface-strong);
+}
+
+.create-topic-field textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.create-topic-error {
+    margin: 0;
+    color: #c34b4b;
+    font-size: 14px;
+}
+
+.create-topic-submit {
+    border: none;
+    background: var(--accent, #2f6fed);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.create-topic-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.create-topic-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(31, 24, 18, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 10;
+}
+
+.create-topic-modal {
+    width: min(520px, 100%);
+    background: var(--surface-strong);
+    border-radius: 20px;
+    border: 1px solid var(--surface-border);
+    padding: 20px 22px 22px;
+    box-shadow: 0 20px 50px rgba(31, 24, 18, 0.25);
+}
+
+.create-topic-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.create-topic-modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.create-topic-close {
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.create-topic-close:hover {
+    color: var(--ink);
+}
+
+.create-topic-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.create-topic-cancel {
+    border: 1px solid var(--surface-border);
+    background: transparent;
+    color: inherit;
+    padding: 10px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
 .topics-list {
     max-height: 360px;
     overflow-y: auto;

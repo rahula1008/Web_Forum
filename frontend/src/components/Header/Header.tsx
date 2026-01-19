@@ -10,7 +10,7 @@ type HeaderProps = {
 const defaultTypeOfPage = "Home Page";
 
 
-const UserLoggedInHeader = ({typeOfPage = defaultTypeOfPage, centerText = "PeerPrep"}: HeaderProps) => {
+const UserLoggedInHeader = ({typeOfPage = defaultTypeOfPage, centerText}: HeaderProps) => {
     const { user, logout } = useAuth();
 
     const handleLogout = async () => {
@@ -24,7 +24,7 @@ const UserLoggedInHeader = ({typeOfPage = defaultTypeOfPage, centerText = "PeerP
             </div>
             <div className="header">
                 <p className="kicker">{typeOfPage}</p>
-                <h1 className="title">{centerText || "PeerPrep"}</h1>
+                <h1 className="title">{centerText || ""}</h1>
             </div>
             <div className="right-section">
                 <p>Hi {user && user.username}</p>
@@ -36,7 +36,7 @@ const UserLoggedInHeader = ({typeOfPage = defaultTypeOfPage, centerText = "PeerP
     )
 }
 
-const UserNotLoggedInHeader = ({typeOfPage = defaultTypeOfPage, centerText = "PeerPrep"}: HeaderProps) => {
+const UserNotLoggedInHeader = ({typeOfPage = defaultTypeOfPage, centerText}: HeaderProps) => {
     return (
         <header>
             <div className='left-section'>
@@ -46,7 +46,7 @@ const UserNotLoggedInHeader = ({typeOfPage = defaultTypeOfPage, centerText = "Pe
             </div>
             <div className="header">
                 <p className="kicker">{typeOfPage}</p>
-                <h1 className="title">{centerText || "PeerPrep"}</h1>
+                <h1 className="title">{centerText || ""}</h1>
             </div>
             <div className='right-section'>
                 <Link className="header-action" to='/login'>Log In</Link>
@@ -55,7 +55,7 @@ const UserNotLoggedInHeader = ({typeOfPage = defaultTypeOfPage, centerText = "Pe
     );
 }
 
-export default function Header({typeOfPage = defaultTypeOfPage, centerText = "PeerPrep"}: HeaderProps) {
+export default function Header({typeOfPage = defaultTypeOfPage, centerText}: HeaderProps) {
     const { isAuthed } = useAuth();
 
     return (

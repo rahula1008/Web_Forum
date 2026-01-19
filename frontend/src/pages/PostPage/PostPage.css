@@ -61,13 +61,65 @@
     justify-content: space-between;
 }
 
-.comment-button {
-    border: 1px solid var(--ink);
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+}
+
+.comment-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.comment-field textarea {
+    border: 1px solid var(--surface-border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--surface-strong);
+    resize: vertical;
+    min-height: 90px;
+}
+
+.comment-error {
+    margin: 0;
+    color: #c34b4b;
+    font-size: 14px;
+}
+
+.comment-submit {
+    align-self: flex-start;
+    border: none;
+    background: var(--accent, #2f6fed);
+    color: white;
+    padding: 8px 16px;
     border-radius: 999px;
-    padding: 8px 18px;
-    background: transparent;
-    cursor: pointer;
     font-weight: 600;
+    cursor: pointer;
+}
+
+.comment-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.login-request {
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px dashed var(--surface-border);
+    color: var(--text-muted);
+    font-size: 14px;
 }
 
 .comments-list {
@@ -99,6 +151,11 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-soft);
+}
+
+.login-request {
+    align-items: center;
+    display: flex;
 }
 
 @media (max-width: 720px) {
