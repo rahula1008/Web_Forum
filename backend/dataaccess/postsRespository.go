@@ -98,14 +98,17 @@ func DeletePost(id int) error {
 
 	result, err := initializers.DB.Exec(deleteQuery, id)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 	if rowsAffected == 0 {
+		fmt.Println(err)
 		return fmt.Errorf("delete post: no rows affected")
 	}
 

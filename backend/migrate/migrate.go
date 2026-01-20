@@ -112,6 +112,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	initializers.DB.MustExec(insertSampleQuery)
+	// initializers.DB.MustExec(insertSampleQuery)
 
 }
