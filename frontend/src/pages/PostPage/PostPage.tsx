@@ -7,6 +7,7 @@ import CommentItem from "./components/CommentItem";
 import { api } from "../../auth/client";
 import Header from "../../components/Header/Header";
 import { useAuth } from "../../auth/useAuth";
+import PostBody from "./components/PostBody";
 
 export default function PostPage() {
 	const { isAuthed, user } = useAuth();
@@ -40,9 +41,6 @@ export default function PostPage() {
 		loadPostAndComments();
 	}, [getPostDetailsEndpoint, getCommentsEndpoint]);
 
-	const createdLabel = post?.created_at
-		? new Date(post.created_at).toLocaleDateString()
-		: "";
 
 	const handleCreateComment = async (
 		event: React.FormEvent<HTMLFormElement>
@@ -92,21 +90,7 @@ export default function PostPage() {
 			<Header typeOfPage={typeOfPage} centerText=" " />
 
 
-			<section className="post-body">
-				{isLoading && <p className="post-state">Loading post...</p>}
-				{!isLoading && !post && (
-					<p className="post-state">Post not found.</p>
-				)}
-				{!isLoading && post && <p className="post-title">{post.title}</p>}
-				{!isLoading && post &&
-					<>
-						<p>{post.body}</p>
-						<p>Created: {createdLabel}</p>
-						<p>Author: {id}</p>
-					</>
-				}
-
-			</section>
+			{post && <PostBody isLoading={isLoading} post={post} user={user} />}
 
 			<section className="comments-panel">
 				<div className="comments-header">
