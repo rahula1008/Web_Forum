@@ -18,25 +18,7 @@
     margin-top: 60px;
 }
 
-.posts-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
 
-.new-post-button {
-    border: 1px solid var(--ink);
-    border-radius: 999px;
-    padding: 8px 18px;
-    background: transparent;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.new-post-button:hover {
-    border-color: var(--accent, #2f6fed);
-}
 
 .create-post-backdrop {
     position: fixed;
