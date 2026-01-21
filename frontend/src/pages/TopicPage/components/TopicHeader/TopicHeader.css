@@ -1,0 +1,49 @@
+.posts-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.topic-titles h1,
+.topic-titles h2 {
+    margin: 0;
+}
+
+.topic-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.topic-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.edit-topic-button {
+    border: 1px solid var(--surface-border);
+    border-radius: 999px;
+    padding: 8px 14px;
+    background: var(--surface);
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.edit-topic-button:hover {
+    border-color: var(--accent, #2f6fed);
+}
+
+.new-post-button {
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    padding: 8px 18px;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.new-post-button:hover {
+    border-color: var(--accent, #2f6fed);
+}

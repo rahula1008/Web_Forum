@@ -11,7 +11,7 @@ import PostBody from "./components/PostBody";
 
 export default function PostPage() {
 	const { isAuthed, user } = useAuth();
-	const { id, postId } = useParams();
+	const { /*id,*/ postId } = useParams();
 	const [post, setPost] = useState<Post | null>(null);
 	const [comments, setComments] = useState<Comment[]>([]);
 	const [isLoading, setIsLoading] = useState(true);

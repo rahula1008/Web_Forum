@@ -7,6 +7,7 @@ import type { Topic } from "../../types/topic";
 import { api } from "../../auth/client";
 import Header from "../../components/Header/Header";
 import { useAuth } from "../../auth/useAuth";
+import TopicHeader from "./components/TopicHeader/TopicHeader";
 
 
 
@@ -17,7 +18,7 @@ export default function TopicPage() {
     const getTopicDetails = `/topics/${id}`;
     const [posts, setPosts] = useState<Post[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [topic, setTopic] = useState<Topic>();
+    const [topic, setTopic] = useState<Topic | null>(null);
     const [isCreating, setIsCreating] = useState(false);
     const [postTitle, setPostTitle] = useState("");
     const [postBody, setPostBody] = useState("");
@@ -87,19 +88,13 @@ export default function TopicPage() {
             <Header typeOfPage="Topic" />
             
             <section className="posts-panel">
-                <div className="posts-header">
-                    <h1>Topic: {topic?.title}</h1>
-                    <h2>Posts</h2>
-                    {isAuthed && (
-                        <button
-                            className="new-post-button"
-                            type="button"
-                            onClick={() => setIsCreating((prev) => !prev)}
-                        >
-                            {isCreating ? "Cancel" : "New Post"}
-                        </button>
-                    )}
-                </div>
+                <TopicHeader 
+                    topic={topic} 
+                    isAuthed={isAuthed} 
+                    setIsCreating={setIsCreating} 
+                    isCreating={isCreating} 
+                />
+                
                 <div className="posts-list">
                     {isLoading && <p className="posts-state">Loading posts...</p>}
                     {!isLoading && posts.length === 0 && (
