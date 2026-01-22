@@ -41,7 +41,7 @@ const UserNotLoggedInHeader = ({typeOfPage = defaultTypeOfPage, centerText}: Hea
         <header>
             <div className='left-section'>
                 <Link to="/" className="header-link">
-                    PeerPrep
+                    Home
                 </Link>
             </div>
             <div className="header">
